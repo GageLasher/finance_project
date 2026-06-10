@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 public class Fund {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -25,7 +25,7 @@ public class Fund {
     private String ticker;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false, columnDefinition = "fund_category")
+    @Column(name = "category", nullable = false)
     private FundCategory category;
 
     @Column(name = "expense_ratio", nullable = false)
@@ -43,7 +43,7 @@ public class Fund {
     public Fund() {
     }
 
-    public Fund(Long id, String name, String ticker, FundCategory category, Double expenseRatio, Double nav,
+    public Fund(Integer id, String name, String ticker, FundCategory category, Double expenseRatio, Double nav,
             String manager, LocalDate inceptionDate) {
         this.id = id;
         this.name = name;
@@ -55,11 +55,11 @@ public class Fund {
         this.inceptionDate = inceptionDate;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,5 +1,6 @@
 package com.finance.services;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -20,20 +21,20 @@ public ResponseEntity<Iterable<Fund>> getAllFunds() {
     }
 
 public ResponseEntity<Fund> createFund(FundDto dto) {
-        return ResponseEntity.status(201).body(this.repo.save(new Fund(0L, dto.name(), dto.ticker(), dto.category(), dto.expenseRatio(),
+        return ResponseEntity.status(201).body(this.repo.save(new Fund(0, dto.name(), dto.ticker(), dto.category(), dto.expenseRatio(),
                 dto.nav(), dto.manager(), dto.inceptionDate())));
     }
 
-public ResponseEntity<Fund> updateFund(Long id, FundDto dto) {
+public ResponseEntity<Fund> updateFund(int id, FundDto dto) {
        if (!repo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         Fund updatedFund = this.repo.save(new Fund(id, dto.name(), dto.ticker(), dto.category(), dto.expenseRatio(),
                 dto.nav(), dto.manager(), dto.inceptionDate()));
-        return ResponseEntity.ok(updatedFund);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedFund);
     }
 
-public ResponseEntity<Void> deleteFund(Long id) {
+public ResponseEntity<Void> deleteFund(int id) {
         if (!repo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

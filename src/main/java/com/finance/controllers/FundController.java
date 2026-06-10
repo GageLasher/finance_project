@@ -31,19 +31,19 @@ public class FundController {
     }
 
     @PostMapping
-    public ResponseEntity<Fund> createFund(FundDto dto) {
+    public ResponseEntity<Fund> createFund(@RequestBody FundDto dto) {
         return fundService.createFund(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Fund> updateFund(@PathVariable Long id, @RequestBody FundDto dto) {
+    public ResponseEntity<Fund> updateFund(@PathVariable int id, @RequestBody FundDto dto) {
         return fundService.updateFund(id, dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFund(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteFund(@PathVariable int id) {
         return fundService.deleteFund(id);
     }
 
-        
+
 }
