@@ -7,5 +7,5 @@ import com.finance.models.Fund;
 
 @Repository
 public interface FundRepository extends CrudRepository<Fund, Integer> {
-
+    java.util.Optional<Fund> findByTicker(String ticker);
 }
