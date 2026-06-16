@@ -10,6 +10,58 @@
     <script src="index.js" defer></script>
 </head>
 <body>
+    <div class="container mt-5">
+ 
+    <form id="new-fund-form" action="#">
+ 
+        <h3>Add Fund</h3>
+ 
+        <div class="mb-3">
+            <label for="fund-name" class="form-label">Fund Name</label>
+            <input type="text" class="form-control" id="fund-name" name="fund-name" placeholder="Vanguard 500 Index">
+        </div>
+ 
+        <div class="mb-3">
+            <label for="ticker-symbol" class="form-label">Ticker Symbol</label>
+            <input type="text" class="form-control" id="ticker-symbol" name="ticker-symbol" placeholder="VFIAX">
+        </div>
+ 
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select id="category" class="form-select" name="category">
+                <option value="LARGE_CAP">Large Cap</option>
+                <option value="SMALL_CAP">Small Cap</option>
+                <option value="INTERNATIONAL">International</option>
+                <option value="BOND">Bond</option>
+                <option value="BALANCED">Balanced</option>
+            </select>
+        </div>
+ 
+        <div class="mb-3">
+            <label for="nav" class="form-label">NAV</label>
+            <input type="number" step="0.01" class="form-control" id="nav" name="nav" placeholder="432.18">
+        </div>
+ 
+        <div class="mb-3">
+            <label for="expense-ratio" class="form-label">Expense Ratio</label>
+            <input type="number" step="0.01" class="form-control" id="expense-ratio" name="expense-ratio" placeholder="0.04">
+        </div>
+ 
+        <div class="mb-3">
+            <label for="fund-manager" class="form-label">Fund Manager</label>
+            <input type="text" class="form-control" id="fund-manager" name="fund-manager" placeholder="Michelle Louie">
+        </div>
+
+         <div class="mb-3">
+            <label for="inception-date" class="form-label">Inception Date</label>
+            <input type="date" class="form-control" id="inception-date" name="inception-date" placeholder="2000-01-01">
+        </div>
+ 
+        <button type="submit" class="btn btn-primary">Submit</button>
+ 
+    </form>
+ 
+</div>
     <table id="funds-table" class="table table-light table-hover my-4">
         <thead>
             <tr>

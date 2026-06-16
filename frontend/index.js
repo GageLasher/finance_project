@@ -15,6 +15,58 @@ document.addEventListener('DOMContentLoaded', () => {
     xhr.send();
 });
 
+
+
+document.getElementById("new-fund-form").addEventListener("submit", (eventInfo) => {
+
+    eventInfo.preventDefault();
+
+    let inputData = new FormData(document.getElementById("new-fund-form"));
+
+    const newFundToAdd = {
+        name: inputData.get("fund-name"),
+        ticker: inputData.get("ticker-symbol"),
+        category: inputData.get("category"),
+        nav: inputData.get("nav"),
+        expenseRatio: inputData.get("expense-ratio"),
+        manager: inputData.get("fund-manager"),
+        inceptionDate: inputData.get("inception-date")
+      
+    }
+    
+    fetch(BACKEND_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(newFundToAdd) 
+    })
+    .then((httpResponse) => {
+
+        if(httpResponse.status === 201) {
+
+            return httpResponse.json();
+        }
+        return null;
+    })
+    .then((fund) => {
+        console.log(fund);
+        addFundToTable(fund);
+    })
+    .catch((error) => {
+       
+     console.log(error);})
+
+
+});
+
+
+
+
+
+
+
+
 function addFundToTable(fund) {
     const tableBody = document.getElementById('funds-table-body');
     const row = document.createElement('tr');
