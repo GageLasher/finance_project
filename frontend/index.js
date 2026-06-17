@@ -16,6 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
     xhr.send();
 });
 
+document.getElementById("search-input").addEventListener("input", (e) => {
+    const query = e.target.value.toLowerCase();
+
+    funds.forEach((fund) => {
+        const row = document.getElementById(`TR-${fund.id}`);
+        const matches = fund.name.toLowerCase().includes(query) || fund.ticker.toLowerCase().includes(query);
+        row.style.display = matches ? "" : "none";
+    });
+});
+
 
 
 document.getElementById("new-fund-form").addEventListener("submit", (eventInfo) => {
