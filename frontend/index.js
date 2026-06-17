@@ -45,18 +45,21 @@ document.getElementById("new-fund-form").addEventListener("submit", (eventInfo) 
     .then((httpResponse) => {
 
         if(httpResponse.status === 201) {
-
+            document.getElementById("error-alert").style.display = "none";
             return httpResponse.json();
         }
+        
+        showError("Failed to add fund.");
         return null;
     })
     .then((fund) => {
         console.log(fund);
         addFundToTable(fund);
+        resetForms();
     })
     .catch((error) => {
-       
-     console.log(error);})
+    showError("An error occurred while adding the fund.");
+    console.log(error);})
 
 
 });
@@ -91,6 +94,7 @@ document.getElementById("update-fund-form").addEventListener("submit", (eventInf
         if(httpResponse.status === 200) {
             return httpResponse.json();
         }
+        showError("Failed to edit fund.");
         return null;
     })
     .then((fund) => {
@@ -98,6 +102,7 @@ document.getElementById("update-fund-form").addEventListener("submit", (eventInf
         resetForms();
     })
     .catch((error) => {
+        showError("Failed to edit fund.");
         console.error("ERROR OCCURED: " + error);
     })
 
@@ -108,7 +113,9 @@ document.getElementById("update-fund-form").addEventListener("submit", (eventInf
 document.getElementById("delete-fund-form").addEventListener("submit", (eventInfo) => {
 
     eventInfo.preventDefault();
-    
+    if (!confirm(`Delete ${selectedFund.name} (${selectedFund.ticker})`)) {
+        return;
+    }
     fetch(BACKEND_URL + `/${selectedFund.id}`, { method: "DELETE" })
     .then((httpResponse) => {
 
@@ -117,7 +124,7 @@ document.getElementById("delete-fund-form").addEventListener("submit", (eventInf
         }
     })
     .catch((error) => {
-        
+        showError("Failed to delete fund.");
         console.error("ERROR OCCURED: " + error);
     })
     .finally(() => {
@@ -251,4 +258,10 @@ const resetForms = () => {
     document.getElementById("new-fund-card").style.display = "block";
     document.getElementById("update-fund-card").style.display = "none";
     document.getElementById("delete-fund-card").style.display = "none";
+}
+
+const showError = (message) => {
+    const alertBox = document.getElementById("error-alert");
+    alertBox.textContent = message;
+    alertBox.style.display = "block";
 }
