@@ -10,23 +10,33 @@
     <script src="index.js" defer></script>
 </head>
 <body>
-    <div class="container mt-5">
+
+     <div class="container py-4" style="max-width: 900px;">
  
+        <div class="mb-4">
+            <h1 class="h3 mb-0">Mutual Fund Catalog</h1>
+            <p class="text-muted small mb-0">Add and manage the firm's fund offerings</p>
+        </div>
+
+    <div class="card mb-4">
+    <div class="card-body">
+    <h2 class="h5 mb-3">Add Fund</h2>
     <form id="new-fund-form" action="#">
- 
-        <h3>Add Fund</h3>
- 
-        <div class="mb-3">
+        
+        <div class="row mb-3">
+        <div class="col-md-6">
             <label for="fund-name" class="form-label">Fund Name</label>
             <input type="text" class="form-control" id="fund-name" name="fund-name" placeholder="Vanguard 500 Index">
         </div>
  
-        <div class="mb-3">
+        <div class="col-md-6">
             <label for="ticker-symbol" class="form-label">Ticker Symbol</label>
             <input type="text" class="form-control" id="ticker-symbol" name="ticker-symbol" placeholder="VFIAX">
         </div>
+        </div>
  
-        <div class="mb-3">
+        <div class="row mb-3">
+        <div class="col-md-6">
             <label for="category" class="form-label">Category</label>
             <select id="category" class="form-select" name="category">
                 <option value="LARGE_CAP">Large Cap</option>
@@ -37,32 +47,46 @@
             </select>
         </div>
  
-        <div class="mb-3">
-            <label for="nav" class="form-label">NAV</label>
+        <div class="col-md-6">
+            <label for="nav" class="form-label">Net Asset Value</label>
             <input type="number" step="0.01" class="form-control" id="nav" name="nav" placeholder="432.18">
         </div>
- 
-        <div class="mb-3">
+        </div>
+        
+        <div class="row mb-3">
+        <div class="col-md-6">
             <label for="expense-ratio" class="form-label">Expense Ratio</label>
             <input type="number" step="0.01" class="form-control" id="expense-ratio" name="expense-ratio" placeholder="0.04">
         </div>
  
-        <div class="mb-3">
+        <div class="col-md-6">
             <label for="fund-manager" class="form-label">Fund Manager</label>
             <input type="text" class="form-control" id="fund-manager" name="fund-manager" placeholder="Michelle Louie">
         </div>
-
-         <div class="mb-3">
+        </div>
+        
+        <div class="row mb-3">
+        <div class="col-md-6">
             <label for="inception-date" class="form-label">Inception Date</label>
             <input type="date" class="form-control" id="inception-date" name="inception-date" placeholder="2000-01-01">
         </div>
+        </div>
  
+        <div class="d-flex justify-content-end">
         <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
  
     </form>
+    </div>
+    </div>
  
-</div>
-    <table id="funds-table" class="table table-light table-hover my-4">
+    <div class="card">
+    <div class="card-header bg-white">
+        <h2 class="h5 mb-0">Fund Catalog</h2>
+    </div>
+    <div class="card-body p-0">
+    <div class="table-responsive">
+    <table id="funds-table" class="table table-striped table-hover my-4">
         <thead>
             <tr>
                 <th>Fund Name</th>
@@ -79,6 +103,10 @@
         </tbody>
         
     </table>
+</div>
+</div>
+</div>
+</div>
 
  <!-- Including Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
