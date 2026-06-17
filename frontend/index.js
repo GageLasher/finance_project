@@ -1,5 +1,6 @@
 const BACKEND_URL = 'http://localhost:8080/funds'
 const funds = [];
+let selectedFund;
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -60,6 +61,69 @@ document.getElementById("new-fund-form").addEventListener("submit", (eventInfo) 
 
 });
 
+document.getElementById("update-fund-form").addEventListener("submit", (eventInfo) => {
+
+    eventInfo.preventDefault();
+
+    let inputData = new FormData(document.getElementById("update-fund-form"));
+    console.log("Selected fund to post:" + selectedFund);
+   const newFundToAdd = {
+        id: selectedFund.id,
+        name: inputData.get("edit-fund-name"),
+        ticker: inputData.get("edit-ticker-symbol"),
+        category: inputData.get("edit-category"),
+        nav: inputData.get("edit-nav"),
+        expenseRatio: inputData.get("edit-expense-ratio"),
+        manager: inputData.get("edit-fund-manager"),
+        inceptionDate: inputData.get("edit-inception-date")
+      
+    }
+    
+    fetch(BACKEND_URL + `/${selectedFund.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify(newFundToAdd)
+    })
+    .then((httpResponse) => {
+
+        if(httpResponse.status === 200) {
+            return httpResponse.json();
+        }
+        return null;
+    })
+    .then((fund) => {
+        editFundInTable(fund);
+        resetForms();
+    })
+    .catch((error) => {
+        console.error("ERROR OCCURED: " + error);
+    })
+
+
+});
+
+
+document.getElementById("delete-fund-form").addEventListener("submit", (eventInfo) => {
+
+    eventInfo.preventDefault();
+    
+    fetch(BACKEND_URL + `/${selectedFund.id}`, { method: "DELETE" })
+    .then((httpResponse) => {
+
+        if(httpResponse.status === 204) {
+            removeFundFromTable(selectedFund.id);
+        }
+    })
+    .catch((error) => {
+        
+        console.error("ERROR OCCURED: " + error);
+    })
+    .finally(() => {
+        resetForms();
+    })
+});
 
 
 
@@ -68,6 +132,7 @@ document.getElementById("new-fund-form").addEventListener("submit", (eventInfo) 
 
 
 function addFundToTable(fund) {
+    
     const tableBody = document.getElementById('funds-table-body');
     const row = document.createElement('tr');
     
@@ -92,8 +157,8 @@ function addFundToTable(fund) {
     inceptionDateTD.innerText = fund.inceptionDate;
 
 
-    editBtnTD.innerHTML = `<button class="btn btn-primary p-3" id="EDIT-${fund.id}">Edit</button>`;
-    delBtnTD.innerHTML = `<button class="btn btn-danger p-3" id="DEL-${fund.id}">Delete</button>`;
+    editBtnTD.innerHTML = `<button class="btn btn-primary" onclick="activateEditForm(${fund.id})" id="EDIT-${fund.id}">Edit</button>`;
+    delBtnTD.innerHTML = `<button class="btn btn-danger" onclick="activateDeleteForm(${fund.id})" id="DEL-${fund.id}">Delete</button>`;
 
     // put all the TDs into the TR
     row.appendChild(fundNameTD);
@@ -110,4 +175,80 @@ function addFundToTable(fund) {
 
     tableBody.appendChild(row);
     funds.push(fund);
+}
+
+const editFundInTable = (fund) => {
+
+    document.getElementById(`TR-${fund.id}`).innerHTML = `
+    <td>${fund.name}</td>
+    <td>${fund.ticker}</td>
+    <td>${fund.category}</td>
+    <td>${fund.expenseRatio}</td>
+    <td>${fund.nav}</td>
+    <td>${fund.manager}</td>
+    <td>${fund.inceptionDate}</td>
+    <td><button class="btn btn-primary" onclick="activateEditForm(${fund.id})" id="EDIT-${fund.id}">Edit</button></td>
+    <td><button class="btn btn-danger" onclick="activateDeleteForm(${fund.id})" id="DEL-${fund.id}">Delete</button></td>
+    `;
+}
+
+const removeFundFromTable = (fundId) => {
+    document.getElementById(`TR-${fundId}`).remove();
+}
+
+const activateEditForm = (fundId) => {
+    console.log("Edit fund with id: " + fundId);
+    for(let fund of funds) {
+        if(fund.id === fundId) {
+            selectedFund = fund;
+            break;
+        }
+    }
+
+    console.log(selectedFund);
+
+    document.getElementById("edit-fund-name").value = selectedFund.name;
+    document.getElementById("edit-ticker-symbol").value = selectedFund.ticker;
+    document.getElementById("edit-category").value = selectedFund.category;
+    document.getElementById("edit-nav").value = selectedFund.nav;
+    document.getElementById("edit-expense-ratio").value = selectedFund.expenseRatio;
+    document.getElementById("edit-fund-manager").value = selectedFund.manager;
+    document.getElementById("edit-inception-date").value = selectedFund.inceptionDate;
+    
+
+    document.getElementById("update-fund-card").style.display = "block";
+    document.getElementById("new-fund-card").style.display = "none";
+    document.getElementById("delete-fund-card").style.display = "none";
+}
+
+const activateDeleteForm = (fundId) => {
+    
+    console.log(fundId);
+    for(let fund of funds) {
+        if(fund.id === fundId) {
+            selectedFund = fund;
+            break;
+        }
+    }
+
+    console.log(selectedFund);
+
+    document.getElementById("delete-fund-name").value = selectedFund.name;
+    document.getElementById("delete-ticker-symbol").value = selectedFund.ticker;
+    document.getElementById("delete-category").value = selectedFund.category;
+    document.getElementById("delete-nav").value = selectedFund.nav;
+    document.getElementById("delete-expense-ratio").value = selectedFund.expenseRatio;
+    document.getElementById("delete-fund-manager").value = selectedFund.manager;
+    document.getElementById("delete-inception-date").value = selectedFund.inceptionDate;
+
+    document.getElementById("update-fund-card").style.display = "none";
+    document.getElementById("new-fund-card").style.display = "none";
+    document.getElementById("delete-fund-card").style.display = "block";
+}
+
+const resetForms = () => {
+
+    document.getElementById("new-fund-card").style.display = "block";
+    document.getElementById("update-fund-card").style.display = "none";
+    document.getElementById("delete-fund-card").style.display = "none";
 }
