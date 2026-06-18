@@ -147,7 +147,10 @@ document.getElementById("update-fund-form").addEventListener("submit", (eventInf
     .then((httpResponse) => {
 
         if(httpResponse.status === 200) {
+
+            document.getElementById("error-alert").style.display = "none";
             return httpResponse.json();
+
         }
         showError("Failed to edit fund.");
         return null;

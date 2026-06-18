@@ -1,8 +1,8 @@
 
 :root {
   /* Core Theme Colors */
-  --bs-primary: #4338ca;       /* Deep Indigo */
-  --bs-danger: #e11d48;        /* Rose Alert */
+  --bs-primary: #343341;       /* Deep Indigo */
+  --bs-danger: #FFCC00;        /* Rose Alert */
 }
 
 /* Primary Button Customization */
@@ -12,8 +12,8 @@
   color: #ffffff !important;
 }
 .btn-primary:hover, .btn-primary:focus {
-  background-color: #3730a3 !important; 
-  border-color: #3730a3 !important;
+  background-color: #202027 !important; 
+  border-color: #202027 !important;
 }
 
 /* Danger Button Customization */
@@ -23,6 +23,6 @@
   color: #ffffff !important;
 }
 .btn-danger:hover, .btn-danger:focus {
-  background-color: #be123c !important; 
-  border-color: #be123c !important;
+  background-color: #957805a1 !important; 
+  border-color: #957805a1 !important;
 }
