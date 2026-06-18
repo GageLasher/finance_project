@@ -1,0 +1,28 @@
+
+:root {
+  /* Core Theme Colors */
+  --bs-primary: #4338ca;       /* Deep Indigo */
+  --bs-danger: #e11d48;        /* Rose Alert */
+}
+
+/* Primary Button Customization */
+.btn-primary {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #ffffff !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #3730a3 !important; 
+  border-color: #3730a3 !important;
+}
+
+/* Danger Button Customization */
+.btn-danger {
+  background-color: var(--bs-danger) !important;
+  border-color: var(--bs-danger) !important;
+  color: #ffffff !important;
+}
+.btn-danger:hover, .btn-danger:focus {
+  background-color: #be123c !important; 
+  border-color: #be123c !important;
+}
