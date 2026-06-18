@@ -226,6 +226,13 @@ function addFundToTable(fund) {
     inceptionDateTD.innerText = fund.inceptionDate;
 
 
+    // Color it red if expense ratio is greater than 0.5 (0.5%)
+    if (fund.expenseRatio > 0.5) {
+    expenseRatioTD.style.color = "red";
+    expenseRatioTD.style.fontWeight = "bold";
+    }
+
+
     editBtnTD.innerHTML = `<button class="btn btn-primary" onclick="activateEditForm(${fund.id})" id="EDIT-${fund.id}">Edit</button>`;
     delBtnTD.innerHTML = `<button class="btn btn-danger" onclick="activateDeleteForm(${fund.id})" id="DEL-${fund.id}">Delete</button>`;
 
@@ -248,11 +255,15 @@ function addFundToTable(fund) {
 
 const editFundInTable = (fund) => {
 
+    // Color it red if expense ratio is greater than 0.5 (0.5%)
+    const expenseRatioColor = fund.expenseRatio > 0.5 ? "color: red; font-weight: bold;" : "";
+
+
     document.getElementById(`TR-${fund.id}`).innerHTML = `
     <td>${fund.name}</td>
     <td>${fund.ticker}</td>
     <td>${fund.category}</td>
-    <td>${fund.expenseRatio}</td>
+    <td style="${expenseRatioColor}">${fund.expenseRatio}</td>
     <td>${fund.nav}</td>
     <td>${fund.manager}</td>
     <td>${fund.inceptionDate}</td>
