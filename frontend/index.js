@@ -289,6 +289,8 @@ const activateEditForm = (fundId) => {
 
     console.log(selectedFund);
 
+    document.getElementById("update-fund-form").scrollIntoView({ behavior: "smooth", block: "center" });
+
     document.getElementById("edit-fund-name").value = selectedFund.name;
     document.getElementById("edit-ticker-symbol").value = selectedFund.ticker;
     document.getElementById("edit-category").value = selectedFund.category;
@@ -315,6 +317,8 @@ const activateDeleteForm = (fundId) => {
     }
 
     console.log(selectedFund);
+
+    document.getElementById("delete-fund-form").scrollIntoView({ behavior: "smooth", block: "center" });
 
     document.getElementById("delete-fund-name").value = selectedFund.name;
     document.getElementById("delete-ticker-symbol").value = selectedFund.ticker;
