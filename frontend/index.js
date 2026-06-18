@@ -2,7 +2,7 @@ const BACKEND_URL = 'http://localhost:8080/funds'
 const funds = [];
 let selectedFund;
 
-
+// Wait for the DOM to load before making the AJAX request
 document.addEventListener('DOMContentLoaded', () => {
    let xhr = new XMLHttpRequest();
    xhr.onreadystatechange = function() {
@@ -16,18 +16,61 @@ document.addEventListener('DOMContentLoaded', () => {
     xhr.send();
 });
 
+// Add event listener to ticker symbol input for duplicate checking
+document.getElementById("ticker-symbol").addEventListener("input", (e) => {
+    const ticker = e.target.value.toUpperCase();
+    const errorDiv = document.getElementById("ticker-error");
+    
+    // Check if this ticker already exists
+    const isDuplicate = funds.some(fund => fund.ticker === ticker);
+    
+    if (isDuplicate && ticker.length > 0) {
+        e.target.style.borderColor = "red";
+        e.target.style.backgroundColor = "#ffe6e6";
+        errorDiv.textContent = "Duplicate ticker symbol";
+        errorDiv.style.display = "block";
+    } else {
+        e.target.style.borderColor = "";
+        e.target.style.backgroundColor = "";
+        errorDiv.textContent = "";
+        errorDiv.style.display = "none";
+    }
+});
+
+// Add event listener to ticker symbol input for duplicate checking
+document.getElementById("edit-ticker-symbol").addEventListener("input", (e) => {
+    const ticker = e.target.value.toUpperCase();
+    const errorDiv = document.getElementById("edit-ticker-error");
+    
+    // Check if this ticker already exists in another fund but not the one we're currently editing
+    const isDuplicate = funds.some(fund => fund.ticker === ticker && fund.id !== selectedFund.id);
+    
+    if (isDuplicate && ticker.length > 0) {
+        e.target.style.borderColor = "red";
+        e.target.style.backgroundColor = "#ffe6e6";
+        errorDiv.textContent = "Duplicate ticker symbol";
+        errorDiv.style.display = "block";
+    } else {
+        e.target.style.borderColor = "";
+        e.target.style.backgroundColor = "";
+        errorDiv.textContent = "";
+        errorDiv.style.display = "none";
+    }
+});
+
+// Add event listener to search input for filtering funds
 document.getElementById("search-input").addEventListener("input", (e) => {
     const query = e.target.value.toLowerCase();
 
     funds.forEach((fund) => {
         const row = document.getElementById(`TR-${fund.id}`);
-        const matches = fund.name.toLowerCase().includes(query) || fund.ticker.toLowerCase().includes(query);
+        const matches = fund.name.toLowerCase().includes(query) || fund.category.toLowerCase().includes(query);
         row.style.display = matches ? "" : "none";
     });
 });
 
 
-
+// Add event listener to new fund form submission
 document.getElementById("new-fund-form").addEventListener("submit", (eventInfo) => {
 
     eventInfo.preventDefault();
@@ -65,7 +108,7 @@ document.getElementById("new-fund-form").addEventListener("submit", (eventInfo) 
     .then((fund) => {
         console.log(fund);
         addFundToTable(fund);
-        resetForms();
+        document.getElementById("new-fund-form").reset();
     })
     .catch((error) => {
     showError("An error occurred while adding the fund.");
@@ -74,6 +117,8 @@ document.getElementById("new-fund-form").addEventListener("submit", (eventInfo) 
 
 });
 
+
+// Add event listener to update fund form submission
 document.getElementById("update-fund-form").addEventListener("submit", (eventInfo) => {
 
     eventInfo.preventDefault();
@@ -108,6 +153,12 @@ document.getElementById("update-fund-form").addEventListener("submit", (eventInf
         return null;
     })
     .then((fund) => {
+
+        // Update the fund in the funds array so that the search and duplicate checking work with the updated data
+        const fundIndex = funds.findIndex(f => f.id === fund.id);
+            if (fundIndex !== -1) {
+                funds[fundIndex] = fund;
+            }
         editFundInTable(fund);
         resetForms();
     })
@@ -120,6 +171,7 @@ document.getElementById("update-fund-form").addEventListener("submit", (eventInf
 });
 
 
+// Add event listener to delete fund form submission
 document.getElementById("delete-fund-form").addEventListener("submit", (eventInfo) => {
 
     eventInfo.preventDefault();
@@ -147,7 +199,7 @@ document.getElementById("delete-fund-form").addEventListener("submit", (eventInf
 
 
 
-
+// Helper functions for manipulating the DOM
 function addFundToTable(fund) {
     
     const tableBody = document.getElementById('funds-table-body');
@@ -213,6 +265,8 @@ const removeFundFromTable = (fundId) => {
     document.getElementById(`TR-${fundId}`).remove();
 }
 
+
+// Activate the edit form and populate it with the fund's current data
 const activateEditForm = (fundId) => {
     console.log("Edit fund with id: " + fundId);
     for(let fund of funds) {
@@ -238,6 +292,7 @@ const activateEditForm = (fundId) => {
     document.getElementById("delete-fund-card").style.display = "none";
 }
 
+// Activate the delete form and populate it with the fund's current data
 const activateDeleteForm = (fundId) => {
     
     console.log(fundId);
@@ -263,6 +318,8 @@ const activateDeleteForm = (fundId) => {
     document.getElementById("delete-fund-card").style.display = "block";
 }
 
+
+// Reset forms and show the new fund form
 const resetForms = () => {
 
     document.getElementById("new-fund-card").style.display = "block";
@@ -270,6 +327,8 @@ const resetForms = () => {
     document.getElementById("delete-fund-card").style.display = "none";
 }
 
+
+// Show error message in alert box
 const showError = (message) => {
     const alertBox = document.getElementById("error-alert");
     alertBox.textContent = message;
